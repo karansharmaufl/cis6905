@@ -33,12 +33,12 @@ io.on('connection', function(socket){
                 if (numClients == 0){
                         socket.join(room);
                         socket.emit('created', room);
-                } else {
+                } else /* if (numClients != 0)*/ {
                 // Second client joining...                	
                         io.sockets.in(room).emit('join', room);
                         socket.join(room);
                         socket.emit('joined', room);
-                 }// else { // max two clients
+                 } //else { // max two clients
                 //         socket.emit('full', room);
                 // }
         });       
