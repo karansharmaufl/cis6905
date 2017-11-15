@@ -57,7 +57,7 @@ var room = prompt('Enter room name:');
 
 // Connect to signalling server
 // var socket = io.connect("http://localhost:8181");
-var socket = io.connect('https://guarded-cliffs-68105.herokuapp.com/');
+var socket = io();
 
 // Send 'Create or join' message to singnalling server
 if (room !== '') {

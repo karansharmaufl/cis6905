@@ -4,7 +4,7 @@
   "description": "O'Reilly Web RTC book",
   "dependencies": {
     "express": "^4.10.2",
-    "socket.io": "^1.3.5"
+    "socket.io": "^1.7.4"
   },
   "scripts": {
     "start": "node completeNodeServerWithDataChannel.js"
