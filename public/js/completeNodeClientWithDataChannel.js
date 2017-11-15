@@ -108,9 +108,9 @@ socket.on('created', function (room){
 
 // Handle 'full' message coming back from server:
 // this peer arrived too late :-(
-socket.on('full', function (room){
-  console.log('Room ' + room + ' is full');
-});
+// socket.on('full', function (room){
+//   console.log('Room ' + room + ' is full');
+// });
 
 // Handle 'join' message coming back from server:
 // another peer is joining the channel
