@@ -57,7 +57,7 @@ var room = prompt('Enter room name:');
 
 // Connect to signalling server
 // var socket = io.connect("http://localhost:8181");
-var socket = io();
+var socket = io.connect('https://rocky-brushlands-70085.herokuapp.com/');
 
 // Send 'Create or join' message to singnalling server
 if (room !== '') {
