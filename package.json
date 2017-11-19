@@ -1,7 +1,7 @@
 {
   "name": "webRTCSimple",
   "version": "0.0.1",
-  "description": "O'Reilly Web RTC book",
+  "description": "Web RTC",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "express": "^4.10.2",

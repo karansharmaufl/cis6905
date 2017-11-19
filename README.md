@@ -1,2 +1,5 @@
-# webrtc
-O'Reilly Real-Time Communication with WebRTC - Updated to use socket.io 1.3.5
+# WebRTC
+This is a real time WebRTC communication application implemented on node js and socket.io.<br>
+#### To run
+run `npm start`
+
