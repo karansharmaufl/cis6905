@@ -68,7 +68,7 @@ if (room !== '') {
 }
 
 // Set getUserMedia constraints
-var constraints = {video: true, audio: false};
+var constraints = {video: true, audio: true};
 
 // From this point on, execution proceeds based on asynchronous events...
 
