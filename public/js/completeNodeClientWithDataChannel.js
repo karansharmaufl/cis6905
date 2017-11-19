@@ -18,6 +18,7 @@ var sendChannel, receiveChannel;
 var sendButton = document.getElementById("sendButton");
 var sendTextarea = document.getElementById("dataChannelSend");
 var receiveTextarea = document.getElementById("dataChannelReceive");
+var chatChannel = document.getElementById("chatChannel");
 
 // HTML5 <video> elements
 var localVideo = document.querySelector('#localVideo');
@@ -54,6 +55,7 @@ var sdpConstraints = {};
 
 // Let's get started: prompt user for input (room name)
 var room = prompt('Enter room name:');
+var name = prompt('Enter your name');
 
 // Connect to signalling server
 // var socket = io.connect("http://localhost:8181");
@@ -66,7 +68,7 @@ if (room !== '') {
 }
 
 // Set getUserMedia constraints
-var constraints = {video: true, audio: true};
+var constraints = {video: true, audio: false};
 
 // From this point on, execution proceeds based on asynchronous events...
 
@@ -223,7 +225,9 @@ function createPeerConnection() {
 
 // Data channel management
 function sendData() {
-  var data = sendTextarea.value;
+  var data = name+ ': '+sendTextarea.value;
+  sendTextarea.value = '';
+  chatChannel.value += data + '\n';
   if(isInitiator) sendChannel.send(data);
   else receiveChannel.send(data);
   trace('Sent data: ' + data);
@@ -242,6 +246,8 @@ function gotReceiveChannel(event) {
 function handleMessage(event) {
   trace('Received message: ' + event.data);
   receiveTextarea.value += event.data + '\n';
+  chatChannel.value += 
+  event.data + '\n';
 }
 
 function handleSendChannelStateChange() {

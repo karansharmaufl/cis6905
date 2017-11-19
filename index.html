@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Very simple WebRTC application with a Node.js signalling server</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="stylesheet.css">
+<title>CIS6905 WebRTC</title>
 
 </head>
 
@@ -11,12 +12,12 @@
 <div id='mainDiv'>
 
 	<table border="1" width="100%">
-		<tr>
+		<tr style="background-color:crimson;color:white">
 			<th>
-				Local video
+				<b>Your video</b>
 			</th>
 			<th>
-				'Remote' video
+				<b>Your peers video</b>
 			</th>		
 		</tr>
 		<tr>
@@ -29,20 +30,25 @@
 		</tr>
 		<tr>
 			<td align="center">
-				<textarea rows="4" cols="60" id="dataChannelSend" disabled
-			placeholder="This will be enabled once the data channel is up..."></textarea>
+				<textarea id="dataChannelSend" disabled
+			placeholder="Please wait to be connected" rows="5" cols="50"></textarea>
 			</td>
-			<td align="center">
-				<textarea rows="4" cols="60" id="dataChannelReceive" disabled></textarea>					
-			</td>		
+			<td align="center" style="visibility:hidden;">
+					<textarea rows="4" cols="60" id="dataChannelReceive" disabled></textarea>					
+				</td>
+					
 		</tr>
 		<tr>
 			<td align="center">
-				<button id="sendButton" disabled>Send</button>
+				<button id="sendButton" class="btn btn-primary" style="background-color:crimson;" disabled>Send</button>
 			</td>
-			<td></td>
 		</tr>		
 	</table>
+	<div align="center">
+			<h3 style="color:crimson"><b>Chat Box</b></h3>
+			<textarea id="chatChannel" placeholder="WebRTC Chat" rows="7" cols="80" style="padding:5px;border: 5px solid crimson"></textarea>
+	</div>
+	 
 </div>
 
 <script src='/socket.io/socket.io.js'></script>

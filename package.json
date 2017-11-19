@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "O'Reilly Web RTC book",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "express": "^4.10.2",
+    "jquery": "^3.2.1",
     "socket.io": "^1.7.4"
   },
   "scripts": {
