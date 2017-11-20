@@ -9,6 +9,6 @@
     "socket.io": "^1.7.4"
   },
   "scripts": {
-    "start": "node completeNodeServerWithDataChannel.js"
+    "start": "node webrtc-server.js"
   }
 }
