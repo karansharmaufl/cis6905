@@ -1,14 +1,10 @@
 'use strict';
 
-// Look after different browser vendors' ways of calling the getUserMedia() API method:
-// Opera --> getUserMedia
-// Chrome --> webkitGetUserMedia
-// Firefox --> mozGetUserMedia
+
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 							|| navigator.mozGetUserMedia;
 
-// Clean-up function:
-// collect garbage before unloading browser's window
+
 window.onbeforeunload = function(e){
 	hangup();
 }
@@ -57,8 +53,7 @@ var sdpConstraints = {};
 var room = prompt('Enter room name:');
 var name = prompt('Enter your name');
 
-// Connect to signalling server
-// var socket = io.connect("http://localhost:8181");
+
 var socket = io();
 
 // Send 'Create or join' message to singnalling server
@@ -67,15 +62,9 @@ if (room !== '') {
   socket.emit('create or join', room);
 }
 
-// Set getUserMedia constraints
+
 var constraints = {video: true, audio: true};
-
-// From this point on, execution proceeds based on asynchronous events...
-
-/////////////////////////////////////////////
-
-// getUserMedia() handlers...
-/////////////////////////////////////////////
+// Handle the mediaType
 function handleUserMedia(stream) {
 	localStream = stream;
 	attachMediaStream(localVideo, stream);
@@ -86,14 +75,6 @@ function handleUserMedia(stream) {
 function handleUserMediaError(error){
 	console.log('navigator.getUserMedia error: ', error);
 }
-/////////////////////////////////////////////
-
-
-// Server-mediated message exchanging...
-/////////////////////////////////////////////
-
-// 1. Server-->Client...
-/////////////////////////////////////////////
 
 // Handle 'created' message coming back from server:
 // this peer is the initiator
@@ -108,14 +89,6 @@ socket.on('created', function (room){
   checkAndStart();
 });
 
-// Handle 'full' message coming back from server:
-// this peer arrived too late :-(
-// socket.on('full', function (room){
-//   console.log('Room ' + room + ' is full');
-// });
-
-// Handle 'join' message coming back from server:
-// another peer is joining the channel
 socket.on('join', function (room){
   console.log('Another peer made a request to join room ' + room);
   console.log('This peer is the initiator of room ' + room + '!');
@@ -159,21 +132,15 @@ socket.on('message', function (message){
     handleRemoteHangup();
   }
 });
-////////////////////////////////////////////////
 
-// 2. Client-->Server
-////////////////////////////////////////////////
-// Send message to the other peer via the signalling server
+// Send message to socket.io server to be sent to peer2. peer1 -> server -> peer2 and vice-versa
 function sendMessage(message){
   console.log('Sending message: ', message);
   socket.emit('message', message);
 }
-////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////
-// Channel negotiation trigger function
-function checkAndStart() {
-  
+// Initiate a video-chat session
+function checkAndStart() {  
   if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {  
 	createPeerConnection();
     isStarted = true;
@@ -183,15 +150,12 @@ function checkAndStart() {
   }
 }
 
-/////////////////////////////////////////////////////////
-// Peer Connection management...
+// Manage connections
 function createPeerConnection() {
   try {
-    pc = new RTCPeerConnection(pc_config, pc_constraints);
-    
+    pc = new RTCPeerConnection(pc_config, pc_constraints);  
     console.log("Calling pc.addStream(localStream)! Initiator: " + isInitiator);
     pc.addStream(localStream);
-    
     pc.onicecandidate = handleIceCandidate;
     console.log('Created RTCPeerConnnection with:\n' +
       '  config: \'' + JSON.stringify(pc_config) + '\';\n' +
@@ -201,10 +165,8 @@ function createPeerConnection() {
     alert('Cannot create RTCPeerConnection object.');
       return;
   }
-
   pc.onaddstream = handleRemoteStreamAdded;
   pc.onremovestream = handleRemoteStreamRemoved;
-
   if (isInitiator) {
     try {
       // Create a reliable data channel
@@ -215,7 +177,7 @@ function createPeerConnection() {
       alert('Failed to create data channel. ');
       trace('createDataChannel() failed with exception: ' + e.message);
     }
-    sendChannel.onopen = handleSendChannelStateChange;
+    sendChannel.onopen = handleSendChannelStateChange; // When send channel opens change html for text box 1
     sendChannel.onmessage = handleMessage;
     sendChannel.onclose = handleSendChannelStateChange;
   } else { // Joiner    
@@ -246,11 +208,10 @@ function gotReceiveChannel(event) {
 function handleMessage(event) {
   trace('Received message: ' + event.data);
   receiveTextarea.value += event.data + '\n';
-  chatChannel.value += 
-  event.data + '\n';
+  chatChannel.value += event.data + '\n'; // Update main channel
 }
 
-function handleSendChannelStateChange() {
+function handleSendChannelStateChange() {  // Handles the state of the initial html
   var readyState = sendChannel.readyState;
   trace('Send channel state is: ' + readyState);
   // If channel ready, enable user's input
@@ -265,7 +226,7 @@ function handleSendChannelStateChange() {
   }
 }
 
-function handleReceiveChannelStateChange() {
+function handleReceiveChannelStateChange() {// Change html
   var readyState = receiveChannel.readyState;
   trace('Receive channel state is: ' + readyState);
   // If channel ready, enable user's input
