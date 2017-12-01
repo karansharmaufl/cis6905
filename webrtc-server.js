@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
+var total_connections=0;
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -19,7 +19,7 @@ http.listen(port, function(){
 
 // Let's start managing connections...
 io.on('connection', function(socket){
-	
+	total_connections++;
     	// Handle 'message' messages
         socket.on('message', function (message) {
                 log('S --> got message: ', message);
@@ -39,6 +39,9 @@ io.on('connection', function(socket){
                         socket.join(room);
                         socket.emit('joined', room);
                  }
+                 console.log(socket.id);
+                 console.log(clients);
+                 console.log('Number of clients:', a)
         });       
         
         function log(){
