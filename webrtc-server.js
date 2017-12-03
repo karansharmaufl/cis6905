@@ -33,15 +33,15 @@ io.on('connection', function(socket){
                 var numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
                 if (numClients == 0){ // peer1 joins
                         socket.join(room);
-                        socket.emit('created', room);
+                        socket.emit('created', room, total_connections);
                 } else  {             // peer2 joins
-                        io.sockets.in(room).emit('join', room);
+                        io.sockets.in(room).emit('join', room, total_connections);
                         socket.join(room);
-                        socket.emit('joined', room);
+                        socket.emit('joined', room, total_connections);
                  }
                  console.log(socket.id);
                  console.log(clients);
-                 console.log('Number of clients:', a)
+                 console.log('Number of clients:', total_connections)
         });       
         
         function log(){
